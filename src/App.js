@@ -15,6 +15,9 @@ function App() {
           path="/dashboard"
           element={<Dashboard />}
         />
+        {/* <Route 
+        path="*"
+        component={NoMatch} /> */}
       </Routes>
     </div>
   );

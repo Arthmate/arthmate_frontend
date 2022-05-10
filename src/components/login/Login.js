@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,26 +12,58 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../copyright/CopyRight';
 import { useNavigate } from 'react-router-dom';
+import { Card, CardContent } from '@mui/material';
+import { environment } from '../../baseUrl/Api';
+import Snackbar from '@mui/material/Snackbar';
+import axios from 'axios';
 
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const [loginData, setLoginData] = useState();
   const navigate = useNavigate();
+
+  const [state, setState] = useState({
+    message: 'Somthing went wrong',
+    open: false
+  });
+
+  const { vertical, horizontal, open, message } = state;
+
+  const handleClick = (message) => {
+    setState({ open: true, message: message });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userCedentials = {
       email: data.get('email'),
       password: data.get('password'),
-    });
-    navigate('/dashboard')
+    };
+    if (userCedentials.email !== "" && userCedentials.password !== "") {
+      axios.post(environment.BaseUrl + '/auth/login', userCedentials)
+        .then(response => {
+          const result = response.data.data;
+          setLoginData(result);
+          localStorage.setItem("user", JSON.stringify(result));
+          navigate('/dashboard');
+          handleClick(response.data.message);
+        })
+        .catch(error => {
+          handleClick(error.message);
+        });
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ mt: 2, border: '1px solid grey' }}>
         <CssBaseline />
         <Box
           sx={{
@@ -41,12 +73,9 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+
+          <img src="/images/arthmate.jpeg"></img>
+
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -68,10 +97,7 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               type="submit"
               fullWidth
@@ -80,6 +106,16 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
+              message={message}
+              key={vertical + horizontal}
+            />
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
