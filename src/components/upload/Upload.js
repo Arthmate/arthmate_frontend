@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Button,Divider } from '@mui/material';
+import { Button, Divider } from '@mui/material';
 import { Input } from '@mui/material';
 import './Upload.css'
+import { Card, CardContent, Typography } from '@mui/material';
 
 function Upload() {
     const [loading, setLoading] = useState(false);
@@ -9,14 +10,14 @@ function Upload() {
     const [data, setData] = useState();
 
     const handleSubmit = event => {
-        console.log(selectedFile,selectedFile.name,"===--")
+        console.log(selectedFile, selectedFile.name, "===--")
         event.preventDefault();
         const formData = new FormData();
         formData.append(
             'file',
             selectedFile,
             selectedFile.name
-          );
+        );
         // await fetch('/', {
         //     method: 'POST',
         //     body: formData,
@@ -24,7 +25,7 @@ function Upload() {
         // setSelectedFile('')
     };
 
-    const handleReset = (e) =>{
+    const handleReset = (e) => {
     }
 
     const handleChange = event => {
@@ -50,17 +51,19 @@ function Upload() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-            <strong className="upload-text">Upload a .xlsx file:</strong>
-                <Input className="upload-input" type="file" placeholder='Select File' onChange={handleChange}>Choose</Input>
-                <Divider></Divider>
-                <Button type='submit'>
-                    Upload a file
-                </Button>
-                <Button onClick={handleReset}>
-                    Reset
-                </Button>
-            </form>
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                        <strong className="upload-text">Upload a .xlsx file:</strong>
+                        <Input className="upload-input" type="file" placeholder='Select File' onChange={handleChange}>Choose</Input>
+                        </div>
+                        <Button className="upload-button" variant="contained" type='submit'>
+                            Upload a file
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </>
     );
 }
