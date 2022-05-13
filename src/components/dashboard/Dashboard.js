@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate,Link } from 'react-router-dom';
 import Upload from '../upload/Upload';
 
 
@@ -24,7 +24,8 @@ const drawerWidth = 240;
 export default function ClippedDrawer() {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [userData, setUserData] = useState("")
+    const [userData, setUserData] = useState("");
+    
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -109,6 +110,9 @@ export default function ClippedDrawer() {
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
                     <Upload />
+                    {/* <Routes>
+                        <Route path="/upload" element={<Upload/>}/>
+                    </Routes> */}
                 </Box>
             </Box>
             );

@@ -46,12 +46,18 @@ export default function SignIn() {
           const result = response.data.data;
           setLoginData(result);
           localStorage.setItem("user", JSON.stringify(result));
-          navigate('/dashboard');
+          if(result){
+            navigate('/dashboard');
+          }else{
+            navigate('/');
+          }
           handleClick(response.data.message);
         })
         .catch(error => {
           handleClick(error.message);
         });
+    }else{
+      handleClick(" Please Enter Username and Password")
     }
   };
 
