@@ -138,125 +138,15 @@ export default function CustomizedTables() {
                     <TableBody>
                         {
                             Object.keys(rows).map((key, i) => (
-                                <TableRow key={i}>
+                                rows[key] !== null ? 
+                                (
+                                    <TableRow key={i}>
                                     <TableCell sx={{ fontWeight: "bold" }} align="left">{key}</TableCell>
-                                    <TableCell align="left">{rows[key] !== null ? rows[key] : ""}</TableCell>
+                                    <TableCell align="left">{rows[key]}</TableCell>
                                 </TableRow>
+                                ):
+                                ""
                             ))}
-                        {/* <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">File Unique Id</TableCell>
-                            <TableCell align="left">{rows.fileUniqueId}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Partner Loan Id</TableCell>
-                            <TableCell align="left">{rows.partnerLoanId}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Full Name</TableCell>
-                            <TableCell align="left">{rows.fullName}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">First Name</TableCell>
-                            <TableCell align="left">{rows.firstName}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Middle Name</TableCell>
-                            <TableCell align="left">{rows.middlName}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Last Name</TableCell>
-                            <TableCell align="left">{rows.lastName}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Father Name</TableCell>
-                            <TableCell align="left">{rows.fatherName}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">residentialPinCode</TableCell>
-                            <TableCell align="left">{rows.residentialPinCode}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Residential Address</TableCell>
-                            <TableCell align="left">{rows.residentialAddress}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Permanent Address</TableCell>
-                            <TableCell align="left">{rows.permanentAddress}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Residential Status</TableCell>
-                            <TableCell align="left">{rows.residentialstatus}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Personal Pan Number</TableCell>
-                            <TableCell align="left">{rows.personalPanNumber}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Poa Type</TableCell>
-                            <TableCell align="left">{rows.poaType}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Poa Number</TableCell>
-                            <TableCell align="left">{rows.poaNumber}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Application Date</TableCell>
-                            <TableCell align="left">{rows.applicationDate}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Mobile Number</TableCell>
-                            <TableCell align="left">{rows.mobileNumber}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">DOB</TableCell>
-                            <TableCell align="left">{rows.dob}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Email Id</TableCell>
-                            <TableCell align="left">{rows.emailId}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Gender</TableCell>
-                            <TableCell align="left">{rows.gender}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Purpose</TableCell>
-                            <TableCell align="left">{rows.purpose}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Industry Segment</TableCell>
-                            <TableCell align="left">{rows.industrySegment}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business Type</TableCell>
-                            <TableCell align="left">{rows.businessType}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business Vintage Overall</TableCell>
-                            <TableCell align="left">{rows.businessVintageOverall}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business Address</TableCell>
-                            <TableCell align="left">{rows.businessAddress}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Retailer Name</TableCell>
-                            <TableCell align="left">{rows.retailerName}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business State</TableCell>
-                            <TableCell align="left">{rows.businessState}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business City</TableCell>
-                            <TableCell align="left">{rows.businessCity}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Business Pin Code</TableCell>
-                            <TableCell align="left">{rows.businessPinCode}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Montly Sales</TableCell>
-                            <TableCell align="left">{rows.montlySales}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Monthly Number Of Transactions</TableCell>
-                            <TableCell align="left">{rows.monthlyNumberOfTransactions}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Shop Activity Status</TableCell>
-                            <TableCell align="left">{rows.shopActivityStatus}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">Type Of Disbursement</TableCell>
-                            <TableCell align="left">{rows.typeOfDisbursement}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">coBorrowerName</TableCell>
-                            <TableCell align="left">{rows.coBorrowerName}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">coApplicantPan</TableCell>
-                            <TableCell align="left">{rows.coApplicantPan}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">coApplicantDob</TableCell>
-                            <TableCell align="left">{rows.coApplicantDob}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">coApplicantAadhar</TableCell>
-                            <TableCell align="left">{rows.coApplicantAadhar}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{fontWeight: "bold"}} align="left">gstNumber</TableCell>
-                            <TableCell align="left">{rows.gstNumber}</TableCell>
-                            <TableCell sx={{fontWeight: "bold"}} align="left"></TableCell>
-                            <TableCell align="left">{rows.businessState}</TableCell>
-                        </TableRow> */}
                     </TableBody>
                 </Table>
             </TableContainer>
