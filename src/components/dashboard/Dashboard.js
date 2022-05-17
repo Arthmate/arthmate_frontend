@@ -97,7 +97,7 @@ export default function ClippedDrawer() {
                     <Toolbar />
                     <Box sx={{ overflow: 'auto' }}>
                         <List>
-                            <ListItem button key='upload' >
+                            <ListItem button key='upload'>
                                 <ListItemIcon>
                                     <InboxIcon />
                                 </ListItemIcon>

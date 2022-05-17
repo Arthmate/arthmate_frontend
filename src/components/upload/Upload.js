@@ -9,7 +9,6 @@ import { environment } from '../../baseUrl/Api';
 import Snackbar from '@mui/material/Snackbar';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import CircularProgress from '@mui/material/CircularProgress';
 import UploadSummary from '../uploadSummary/UploadSummary';
 import Loader from '../utils/Loader';
 
@@ -41,6 +40,7 @@ function Upload() {
     const [userData, setUserData] = useState('');
     const [checked, setChecked] = useState(false);
     const [alert, setAlert] = useState(false);
+    const [uuId, setUuId] = useState('');
     const [state, setState] = useState({
         message: 'Somthing went wrong',
         open: false
@@ -76,7 +76,7 @@ function Upload() {
     };
 
     const handleChange = event => {
-        setSelectedFile(event.target.files[0])
+        setSelectedFile(event.target.files[0]);
     };
 
     const handleAlert = (value) => {
@@ -101,10 +101,12 @@ function Upload() {
                 const formData = new FormData();
                 formData.append('masterSheet', selectedFile);
                 formData.append('access_token', access_token);
-                formData.append('hitSuccessBre', checked);
+                formData.append('hitSuccessBre', checked === true ? 'yes' : 'no' );
                 await axios.post(environment.BaseUrlToUpload + `uploadMasterSheet`, formData)
                     .then(response => {
                         const body = response.data.body;
+                        const uuid = response.data.uuid;
+                        setUuId(uuid);
                         setUploadSummary(body);
                         setSelectedFile('');
                         setLoader(false);
@@ -205,7 +207,9 @@ function Upload() {
             <UploadSummary
                 uploadSummary={uploadSummary}
                 alert={alert}
+                uuId={uuId}
                 setAlert={handleAlert}
+                handleClick={handleClick}
             />
         </>
     );
