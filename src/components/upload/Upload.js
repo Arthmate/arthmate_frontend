@@ -12,25 +12,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import UploadSummary from '../uploadSummary/UploadSummary';
 import Loader from '../utils/Loader';
 
-const currencies = [
-    {
-        value: 'USD',
-        label: '$',
-    },
-    {
-        value: 'EUR',
-        label: '€',
-    },
-    {
-        value: 'BTC',
-        label: '฿',
-    },
-    {
-        value: 'JPY',
-        label: '¥',
-    },
-];
-
 function Upload() {
     let resetRef = useRef();
     const [uploadSummary, setUploadSummary] = useState('');
@@ -38,9 +19,12 @@ function Upload() {
     const [loader, setLoader] = useState(false);
     const [selectedFile, setSelectedFile] = useState('');
     const [userData, setUserData] = useState('');
-    const [checked, setChecked] = useState(false);
     const [alert, setAlert] = useState(false);
     const [uuId, setUuId] = useState('');
+    const [partner, setPartner] = useState("");
+    const [product, setProduct] = useState('')
+    const [productName, setProductName] = useState([])
+    const [partnerData, setPartnerData] = useState([]);
     const [state, setState] = useState({
         message: 'Somthing went wrong',
         open: false
@@ -50,16 +34,27 @@ function Upload() {
     const { vertical, horizontal, open, message } = state;
 
 
-    const handleDropdownValue1 = (event) => {
-        setCurrency(event.target.value);
+    const getDetailPartner = async() => {
+        await axios.get(environment.BaseUrlToUpload + `detailedPartners`)
+        .then(response => {
+            const res = response.data.body;
+            setPartnerData(res);
+        })
+        .catch(error => {
+            message("Somthing went wrong");
+        });
+    }
+
+
+    const handleDropdownValue = (event) => {
+        event.preventDefault();
+        setPartner(event.target.value);
+        let productValue = partnerData?.find((val) => val.id === event.target.value);
+        setProductName(productValue.product)
     };
 
-    const handleDropdownValue2 = (event) => {
-        setCurrency(event.target.value);
-    };
-
-    const handleCheckbox = (event) => {
-        setChecked(event.target.checked);
+    const handleProductDropdown = (event) => {
+        setProduct(event.target.value);
     };
 
     const handleClick = (message) => {
@@ -72,7 +67,8 @@ function Upload() {
 
     const reset = () => {
         resetRef.reset();
-        setChecked(false);
+        setProduct('');
+        setPartner('');
     };
 
     const handleChange = event => {
@@ -101,7 +97,8 @@ function Upload() {
                 const formData = new FormData();
                 formData.append('masterSheet', selectedFile);
                 formData.append('access_token', access_token);
-                formData.append('hitSuccessBre', checked === true ? 'yes' : 'no' );
+                formData.append('productId', product);
+                formData.append('partnerId', partner)
                 await axios.post(environment.BaseUrlToUpload + `uploadMasterSheet`, formData)
                     .then(response => {
                         const body = response.data.body;
@@ -123,6 +120,7 @@ function Upload() {
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem('user'));
         setUserData(data);
+        getDetailPartner();
     }, [])
 
     return (
@@ -135,7 +133,7 @@ function Upload() {
                     <form onSubmit={handleSubmit} ref={(el) => resetRef = el}>
                         <Box
                             sx={{
-                                '& .MuiTextField-root': { m: 1, mb: 3, width: '25ch' },
+                                "& .MuiTextField-root": { m: 1, mb: 3, width: "25ch" },
                             }}
                             noValidate
                             autoComplete="off"
@@ -144,13 +142,13 @@ function Upload() {
                                 id="outlined-select-currency"
                                 select
                                 label="Partner Name"
-                                value={currency}
-                                // onChange={handleDropdownValue1}
-                                helperText="Select Partner"
+                                value={partner}
+                                onChange={handleDropdownValue}
+                                helperText="Partner Name"
                             >
-                                {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
+                                {partnerData?.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.partnerName}
                                     </MenuItem>
                                 ))}
                             </TextField>
@@ -158,13 +156,14 @@ function Upload() {
                                 id="outlined-select-currency"
                                 select
                                 label="Product Type"
-                                value={currency}
-                                // onChange={handleDropdownValue2}
-                                helperText="Select Product"
+                                value={product}
+                                onChange={handleProductDropdown}
+                                helperText="Product Type"
+                                disabled={currency === "Select"}
                             >
-                                {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
+                                {productName?.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.name}
                                     </MenuItem>
                                 ))}
                             </TextField>
@@ -172,18 +171,6 @@ function Upload() {
                         <Box sx={{ m: 1 }}>
                             <strong className="upload-text">Upload a .xlsx File:</strong>
                             <Input className="upload-input" type="file" onChange={handleChange}>Choose</Input>
-                        </Box>
-                        <Box sx={{ m: 1 }}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={checked}
-                                        onChange={handleCheckbox}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                }
-                                label='Hit Success BRE'
-                            />
                         </Box>
                         <Stack spacing={6} direction="row" sx={{ m: 1 }}>
                             <Button variant="contained" type='submit'>Upload file</Button>
@@ -215,4 +202,4 @@ function Upload() {
     );
 }
 
-export default Upload
+export default Upload;
