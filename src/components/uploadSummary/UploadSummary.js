@@ -10,8 +10,6 @@ import { environment } from '../../baseUrl/Api';
 
 function UploadSummary({ uploadSummary, alert, uuId, setAlert, handleClick }) {
 
-    console.log(uuId);
-
     const handleDownloadSummary = async () => {
         await axios.get(environment.BaseUrlToUpload + `sheetUploadStatusDownload/${uuId}`, {
             responseType: 'blob',
@@ -47,7 +45,7 @@ function UploadSummary({ uploadSummary, alert, uuId, setAlert, handleClick }) {
                         <Typography>Total Records - {uploadSummary.totalRecords ? uploadSummary.totalRecords : "0"}</Typography>
                         <Typography>Success - {uploadSummary.successfullyUploaded ? uploadSummary.successfullyUploaded : "0"}</Typography>
                         <Typography>Exception - {uploadSummary.failedToUpload ? uploadSummary.failedToUpload : "0"}</Typography>
-                        <Typography>Click Here To Download - <Button variant="text" onClick={handleDownloadSummary}>Summary Report</Button></Typography>
+                        {uuId ? (<Typography>Click Here To Download - <Button variant="text" onClick={handleDownloadSummary}>Summary Report</Button></Typography>): ''}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

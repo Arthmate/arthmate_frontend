@@ -47,7 +47,7 @@ export default function SignIn({authenticate}) {
           setLoginData(result);
           localStorage.setItem("user", JSON.stringify(result));
           if(result){
-            navigate('/dashboard');
+            navigate('/upload');
             authenticate();
           }else{
             navigate('/');

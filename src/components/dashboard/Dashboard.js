@@ -47,6 +47,24 @@ export default function ClippedDrawer({ logout }) {
         setUserData(data);
     }, [])
 
+    const drawerList = [
+        // {
+        //   text: 'Home',
+        //   icon: <DashboardIcon />,
+        //   onClick: () => navigate('/dashborad'),
+        // },
+        {
+            text: 'Upload',
+            icon: <InboxIcon />,
+            onClick: () => navigate('/upload')
+        },
+        {
+            text: 'Upload Summary',
+            icon: <SummarizeIcon />,
+            onClick: () => navigate('/uploadSummary')
+        },
+    ];
+
     return (
         <>
             <CssBaseline />
@@ -100,28 +118,15 @@ export default function ClippedDrawer({ logout }) {
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
-                        <ListItem button key='dashboard' onClick={() => navigate("/dashboard")}>
-                            <ListItemIcon>
-                                <DashboardIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Dashboard" />
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button key='upload' onClick={() => navigate("/upload")}>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Upload" />
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button key='uploadSummary' onClick={() => navigate("/uploadSummary")}>
-                            <ListItemIcon>
-                                <SummarizeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Upload Summary" />
-                        </ListItem>
+                        {drawerList.map((item, index) => {
+                            const { text, icon, onClick } = item;
+                            return (
+                                <ListItem button key={text} onClick={onClick}>
+                                    {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            );
+                        })}
                     </List>
                     <Divider />
                 </Box>

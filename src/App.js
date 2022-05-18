@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import './App.css';
 import Upload from './components/upload/Upload';
 import Listing from './components/uploadSummary/Listing';
-import Main from './components/main/Main';
+// import Main from './components/main/Main';
 
 function App() {
   const [token, setToken] = useState(false);
@@ -32,11 +32,11 @@ function App() {
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <Toolbar />
             <Routes>
-              <Route
+              {/* <Route
                 exact
                 path="/dashboard"
                 element={<Main/>}
-              />
+              /> */}
               <Route
                 exact
                 path="/upload"
@@ -47,7 +47,7 @@ function App() {
                 path="/uploadSummary"
                 element={<Listing />}
               />
-              <Route path="*" element={<Navigate to={token ? '/dashboard' : "/"} />}></Route>
+              <Route path="*" element={<Navigate to={token ? '/upload' : "/"} />}></Route>
             </Routes>
           </Box>
         </Box>

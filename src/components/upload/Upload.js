@@ -34,15 +34,15 @@ function Upload() {
     const { vertical, horizontal, open, message } = state;
 
 
-    const getDetailPartner = async() => {
+    const getDetailPartner = async () => {
         await axios.get(environment.BaseUrlToUpload + `detailedPartners`)
-        .then(response => {
-            const res = response.data.body;
-            setPartnerData(res);
-        })
-        .catch(error => {
-            message("Somthing went wrong");
-        });
+            .then(response => {
+                const res = response.data.body;
+                setPartnerData(res);
+            })
+            .catch(error => {
+                handleClick("Somthing went wrong");
+            });
     }
 
 
@@ -83,36 +83,46 @@ function Upload() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader(true);
-        var validExts = new Array(".xlsx", ".xls");
-        var fileExt = selectedFile.name;
-        fileExt = fileExt ? fileExt.substring(fileExt.lastIndexOf('.')) : '';
-        if (validExts.indexOf(fileExt) < 0) {
+        if (!partner && !product) {
+            handleClick("Please Select Partner Name and Product Type");
             setLoader(false);
-            handleClick("Select valid files are of " +
-                validExts.toString() + " types.");
-            return false;
-        }
-        else {
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append('masterSheet', selectedFile);
-                formData.append('access_token', access_token);
-                formData.append('productId', product);
-                formData.append('partnerId', partner)
-                await axios.post(environment.BaseUrlToUpload + `uploadMasterSheet`, formData)
-                    .then(response => {
-                        const body = response.data.body;
-                        const uuid = response.data.uuid;
-                        setUuId(uuid);
-                        setUploadSummary(body);
-                        setSelectedFile('');
-                        setLoader(false);
-                        setAlert(true);
-                    })
-                    .catch(error => {
-                        handleClick(error.message);
-                        setLoader(false);
-                    });
+        } else {
+            var validExts = new Array(".xlsx", ".xls");
+            var fileExt = selectedFile.name;
+            fileExt = fileExt ? fileExt.substring(fileExt.lastIndexOf('.')) : '';
+            if (validExts.indexOf(fileExt) < 0) {
+                setLoader(false);
+                handleClick("Select valid files are of " +
+                    validExts.toString() + " types.");
+                return false;
+            }
+            else {
+                if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append('masterSheet', selectedFile);
+                    formData.append('access_token', access_token);
+                    formData.append('productId', product);
+                    formData.append('partnerId', partner);
+                    await axios.post(environment.BaseUrlToUpload + `uploadMasterSheet`, formData)
+                        .then(response => {
+                            if (response.data.status === true) {
+                                const body = response.data.body;
+                                const uuid = response.data.uuid;
+                                setUuId(uuid);
+                                setUploadSummary(body);
+                                setSelectedFile('');
+                                setLoader(false);
+                                setAlert(true);
+                            } else {
+                                handleClick(response.data.message);
+                                setLoader(false);
+                            }
+                        })
+                        .catch(error => {
+                            handleClick(error.message);
+                            setLoader(false);
+                        });
+                }
             }
         }
     };
@@ -144,7 +154,7 @@ function Upload() {
                                 label="Partner Name"
                                 value={partner}
                                 onChange={handleDropdownValue}
-                                helperText="Partner Name"
+                                helperText="Select Partner Name"
                             >
                                 {partnerData?.map((option) => (
                                     <MenuItem key={option.id} value={option.id}>
@@ -158,7 +168,7 @@ function Upload() {
                                 label="Product Type"
                                 value={product}
                                 onChange={handleProductDropdown}
-                                helperText="Product Type"
+                                helperText="Select Product Type"
                                 disabled={currency === "Select"}
                             >
                                 {productName?.map((option) => (
