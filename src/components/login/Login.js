@@ -14,7 +14,7 @@ import axios from 'axios';
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({authenticate}) {
   const [loginData, setLoginData] = useState();
   const navigate = useNavigate();
 
@@ -47,7 +47,8 @@ export default function SignIn() {
           setLoginData(result);
           localStorage.setItem("user", JSON.stringify(result));
           if(result){
-            navigate('/dashboard');
+            navigate('/upload');
+            authenticate();
           }else{
             navigate('/');
           }
