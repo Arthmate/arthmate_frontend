@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import './App.css';
 import Upload from './components/upload/Upload';
 import Loan from './components/loan/loan';
-// import Main from './components/main/Main';
+import Listing from './components/uploadSummary/Listing'
 
 function App() {
   const [token, setToken] = useState(false);
@@ -46,6 +46,11 @@ function App() {
                 exact
                 path="/uploadSummary"
                 element={<Loan />}
+              />
+              <Route
+                exact
+                path="/listing/:id"
+                element={<Listing />}
               />
               <Route path="*" element={<Navigate to={token ? '/upload' : "/"} />}></Route>
             </Routes>

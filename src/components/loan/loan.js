@@ -145,9 +145,9 @@ function Loan() {
     },
   }));
 
-  // const onloanClick = (row) => {
-  //   navigate("/")
-  // }
+  const onLoanClick = (row) => {
+    navigate(`/listing/${row}`)
+  }
 
   return (
     <>
@@ -174,12 +174,8 @@ function Loan() {
             </TableHead>
             <TableBody>
               {loanlist.map((row) => (
-                <StyledTableRow
-                // onClick={() => {
-                //   onloanClick(row);
-                // }}
-                >
-                  <StyledTableCell component="th" scope="row">
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row" sx={{cursor: "pointer", color:"blueviolet"}} onClick={() => onLoanClick(row.id)}>
                     {row.personalPanNumber}
                   </StyledTableCell>
                   <StyledTableCell align="right">

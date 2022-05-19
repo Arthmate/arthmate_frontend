@@ -11,6 +11,7 @@ import { Typography } from '@mui/material';
 import axios from 'axios';
 import { environment } from '../../baseUrl/Api';
 import Snackbar from '@mui/material/Snackbar';
+import { useParams } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -33,12 +34,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function CustomizedTables() {
+    const params = useParams();
     const [listingData, setListingData] = useState('');
     const [state, setState] = useState({
         message: 'Somthing went wrong',
         open: false
     });
     const { vertical, horizontal, open, message } = state;
+    const {id} = params;
+
 
     const handleClick = (message) => {
         setState({ open: true, message: message });
@@ -49,7 +53,7 @@ export default function CustomizedTables() {
     };
 
     const getListingData = async () => {
-        await axios.get(environment.BaseUrlToUpload + `uploadDetails/${1}`)
+        await axios.get(environment.BaseUrlToUpload + `uploadDetails/${id}`)
             .then(response => {
                 const res = response.data.body;
                 setListingData(res);
