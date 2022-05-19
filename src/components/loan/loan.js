@@ -11,6 +11,7 @@ import axios from "axios";
 import { environment } from "../../baseUrl/Api";
 import { TextField } from "@mui/material";
 import Pagination from "../allComponents/pagination";
+import { useNavigate } from "react-router-dom";
 
 const TotalData = [
   {
@@ -41,12 +42,14 @@ const TotalData = [
 
 function Loan() {
   const [loanlist, setLoanList] = useState([]);
+  const [allList, setAllList] = useState([]);
   const [pagination, setPagination] = useState({});
   const [search, setSearch] = useState("");
   const [state, setState] = useState({
     message: "Somthing went wrong",
     open: false,
   });
+  const navigate = useNavigate();
 
   const handleClick = (message) => {
     setState({ open: true, message: message });
@@ -79,6 +82,15 @@ function Loan() {
           `uploadDataList?page=${vals.pagination.pageNumber}&pageSize=${vals.pagination.pageSize}`
       )
       .then((response) => {
+        if (response.status === 200) {
+          setLoanList(response.data.body.data);
+          setAllList(response.data.body.data);
+          setPagination({
+            pageNumber: response.data.body.page,
+            pageSize: response.data.body.pageSize,
+            totalCount: response.data.body.totalRecords,
+          });
+        }
         console.log("response", response);
       })
       .catch((error) => {
@@ -87,17 +99,25 @@ function Loan() {
   };
 
   const handleSearch = (event) => {
-    var lowerCase = event.target.value.toLowerCase();
+    var lowerCase = event.target.value;
+    console.log("lowerCase", lowerCase);
     setSearch(lowerCase);
-    TotalData.filter((response) => {
-      if (event.target.value === "") {
-        return response;
-      }
-      //return the item which contains the user input
-      else {
-        return response.personalPanNumber.toLowerCase().includes(lowerCase);
-      }
-    });
+
+    if (event.target.value !== "") {
+      const results = loanlist.filter((user) => {
+        return user.personalPanNumber
+          .toLowerCase()
+          .startsWith(lowerCase.toLowerCase());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setLoanList(results);
+    }
+    //return the item which contains the user input
+    else {
+      setLoanList(allList);
+    }
+
+    console.log("TotalData", loanlist);
   };
 
   useEffect(() => {
@@ -127,12 +147,17 @@ function Loan() {
     },
   }));
 
+  // const onloanClick = (row) => {
+  //   navigate("/")
+  // }
+
   return (
     <>
       <div className="padding">
         <div className="bg_sky submit">
           <TextField
             id="outlined-basic"
+            className="bg_white"
             label="Search"
             onChange={(event) => handleSearch(event)}
             variant="outlined"
@@ -150,8 +175,12 @@ function Loan() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {TotalData.map((row) => (
-                <StyledTableRow>
+              {loanlist.map((row) => (
+                <StyledTableRow
+                // onClick={() => {
+                //   onloanClick(row);
+                // }}
+                >
                   <StyledTableCell component="th" scope="row">
                     {row.personalPanNumber}
                   </StyledTableCell>
