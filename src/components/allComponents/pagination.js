@@ -39,10 +39,10 @@ const Pagination = (props) => {
   const handlePageNumber = (val) => {
     switch (val) {
       case "next":
-        setPageNumber(pageNumber + 1);
+        setPageNumber(parseInt(pageNumber) + 1);
         break;
       case "prev":
-        setPageNumber(pageNumber - 1);
+        setPageNumber(parseInt(pageNumber) - 1);
         break;
       default:
         break;

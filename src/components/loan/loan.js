@@ -55,14 +55,12 @@ function Loan() {
     setState({ open: true, message: message });
   };
 
-  //   const handlePagination = (page) => {
-  //     const vals = {
-  //       pagination: { pageNumber: page.pageNumber, pageSize: page.pageSize },
-  //       search,
-  //       filter,
-  //     };
-  //     handleTableData(vals);
-  //   };
+  const handlePagination = (page) => {
+    const vals = {
+      pagination: { pageNumber: page.pageNumber, pageSize: page.pageSize },
+    };
+    handleTableData(vals);
+  };
 
   //   const handleSearch = (searchTerm) => {
   //     setSearch(searchTerm);
@@ -146,8 +144,8 @@ function Loan() {
   }));
 
   const onLoanClick = (row) => {
-    navigate(`/listing/${row}`)
-  }
+    navigate(`/listing/${row}`);
+  };
 
   return (
     <>
@@ -175,7 +173,12 @@ function Loan() {
             <TableBody>
               {loanlist.map((row) => (
                 <StyledTableRow>
-                  <StyledTableCell component="th" scope="row" sx={{cursor: "pointer", color:"blueviolet"}} onClick={() => onLoanClick(row.id)}>
+                  <StyledTableCell
+                    component="th"
+                    scope="row"
+                    sx={{ cursor: "pointer", color: "blueviolet" }}
+                    onClick={() => onLoanClick(row.id)}
+                  >
                     {row.personalPanNumber}
                   </StyledTableCell>
                   <StyledTableCell align="right">
@@ -195,7 +198,7 @@ function Loan() {
         </TableContainer>
         <Pagination
           pagination={pagination}
-          // onChangePage={(paginate) => handlePagination(paginate)}
+          onChangePage={(paginate) => handlePagination(paginate)}
         />
       </div>
     </>
