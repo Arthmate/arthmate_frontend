@@ -105,9 +105,7 @@ function Loan() {
 
     if (event.target.value !== "") {
       const results = loanlist.filter((user) => {
-        return user.personalPanNumber
-          .toLowerCase()
-          .startsWith(lowerCase.toLowerCase());
+        return user.fullName.toLowerCase().startsWith(lowerCase.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
       });
       setLoanList(results);
