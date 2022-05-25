@@ -1,0 +1,34 @@
+.allflex {
+    display: flex;
+    flex-direction: row;
+}
+
+.entry {
+    margin-right: 10px;
+}
+
+.submit {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.margin_top {
+    margin-top: 10px;
+}
+
+.bg_sky {
+    background-color: #F0F8FF;
+}
+
+.padding{
+    padding: 15px;
+}
+
+.bg_white{
+    background-color: wheat;
+    color: black;
+}
+
+.mg_top{
+    margin-top: 20px;
+}
