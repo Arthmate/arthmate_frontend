@@ -12,6 +12,8 @@ import axios from 'axios';
 import { environment } from '../../baseUrl/Api';
 import Snackbar from '@mui/material/Snackbar';
 import { useParams } from 'react-router-dom';
+import {isString, includes} from 'lodash';
+import { Link } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -80,7 +82,7 @@ export default function CustomizedTables() {
                                     (
                                         <TableRow key={i}>
                                             <TableCell sx={{ fontWeight: "bold" }} align="left">{key.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) { return str.toUpperCase(); })}</TableCell>
-                                            <TableCell align="left">{listingData[key]}</TableCell>
+                                            {isString(listingData[key]) && includes(listingData[key],'http') || includes(listingData[key],'file')? <TableCell align="left"><Link href={listingData[key]} underline="hover">{listingData[key]}</Link></TableCell> : <TableCell align="left">{listingData[key] }</TableCell>}
                                         </TableRow>
                                     ) :
                                     ""
