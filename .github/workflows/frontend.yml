@@ -1,33 +1,34 @@
-name: Deployment
-
+name: actions file for frontend code
 on:
   push:
-    branches: [ master ]
-
-  workflow_dispatch:
-
+    branches:
+      - "master"
 jobs:
-  build:
-
+  initializing-and-testing-code:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [17.x]
-
     steps:
-      - uses: actions/checkout@v2
-
-      - run: npm i
-      - run: pm2 delete all
-      - run: pm2 --name analyticsfox start npm -- start
-
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@5.1
+      - name: checking-out-repo
+        uses: actions/checkout@v2
+      
+      - name: setting up node
+        uses: actions/setup-node@v2
         with:
-          switches: -avzr --delete
-          path: ./*
-          remote_path: /home/ubuntu/Artmate_frontend/arthmate_frontend
-          remote_host: ssh -i "legacy-lms-uat.pem" ubuntu@ec2-3-111-35-62.ap-south-1.compute.amazonaws.com
-          remote_user: ubuntu
-          remote_key: "${{ secrets.SSH_PEM_KEY }}"
+          node-version: "17"
+
+  deploying_the_code:
+    needs: initializing-and-testing-code
+    runs-on: ubuntu-latest
+    steps:
+      - name: running the command to deploy 
+        uses: appleboy/ssh-action@master
+        with:
+          host: ssh -i "legacy-lms-uat.pem" ubuntu@ec2-3-111-35-62.ap-south-1.compute.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.SSH_PEM_KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/Artmate_frontend/arthmate_frontend
+            git pull origin master
+            npm i
+            pm2 delete all
+            pm2 --name analyticsfox start npm -- start
