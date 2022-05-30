@@ -24,7 +24,7 @@ jobs:
         with:
           host: ssh -i "legacy-lms-uat.pem" ubuntu@ec2-3-111-35-62.ap-south-1.compute.amazonaws.com
           username: ubuntu
-          key: ${{ secrets.SSH_PEM_KEY }}
+          key: ${{secrets.SSH_PEM_KEY}}
           port: 22
           script: |
             cd /home/ubuntu/Artmate_frontend/arthmate_frontend
