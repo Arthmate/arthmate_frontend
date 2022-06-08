@@ -25,6 +25,7 @@ function Upload() {
     const [product, setProduct] = useState('')
     const [productName, setProductName] = useState([])
     const [partnerData, setPartnerData] = useState([]);
+    const [status, setStatus] = useState('');
     const [state, setState] = useState({
         message: 'Somthing went wrong',
         open: false
@@ -35,6 +36,7 @@ function Upload() {
 
 
     const getDetailPartner = async () => {
+        console.log(environment.BaseUrlToUpload+ `detailedPartners`,"url");
         await axios.get(environment.BaseUrlToUpload + `detailedPartners`)
             .then(response => {
                 const res = response.data.body;
@@ -105,15 +107,20 @@ function Upload() {
                     formData.append('partnerId', partner);
                     await axios.post(environment.BaseUrlToUpload + `uploadMasterSheet`, formData)
                         .then(response => {
+                            const status = response.data.status;
+                            const body = response.data.body;
+                            const uuid = response.data.uuid;
                             if (response.data.status === true) {
-                                const body = response.data.body;
-                                const uuid = response.data.uuid;
                                 setUuId(uuid);
                                 setUploadSummary(body);
                                 setSelectedFile('');
                                 setLoader(false);
                                 setAlert(true);
                             } else {
+                                setUploadSummary(body);
+                                setStatus(status);
+                                setSelectedFile('');
+                                setAlert(true);
                                 handleClick(response.data.message);
                                 setLoader(false);
                             }
@@ -207,6 +214,7 @@ function Upload() {
                 uuId={uuId}
                 setAlert={handleAlert}
                 handleClick={handleClick}
+                status={status}
             />
         </>
     );
