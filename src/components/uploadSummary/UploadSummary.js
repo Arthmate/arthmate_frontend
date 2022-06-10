@@ -17,7 +17,6 @@ function UploadSummary({ uploadSummary, alert, uuId, setAlert, handleClick, stat
             responseType: 'blob',
         })
             .then(response => {
-                console.log(response.data);
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -29,7 +28,6 @@ function UploadSummary({ uploadSummary, alert, uuId, setAlert, handleClick, stat
                 handleClick("Something went wrong");
             });
     }
-
 
     return (
         <>
@@ -45,29 +43,28 @@ function UploadSummary({ uploadSummary, alert, uuId, setAlert, handleClick, stat
                 <Divider></Divider>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <>
-                            <Typography><span><b>Total Records</b></span> - {uploadSummary.totalRecords ? uploadSummary.totalRecords : "0"}</Typography>
-                            <Typography><span><b>Validation Passed</b></span>  - {uploadSummary.validationPassed ? uploadSummary.validationPassed : "0"}</Typography>
-                            <Typography><span><b>Success</b></span> - {uploadSummary.successfullyUploaded ? uploadSummary.successfullyUploaded : "0"}</Typography>
-                            <Typography><span><b>Exception</b></span>  - {uploadSummary.failedToUpload ? uploadSummary.failedToUpload : "0"}</Typography>
-                            {uuId ? (<Typography><span><b>Click Here To Download</b></span> - <Button variant="text" onClick={handleDownloadSummary}>Summary Report</Button></Typography>) : ''}
-                            <Divider sx={{m:2}}></Divider>
-                            {uploadFailures?.map((fail) => (
-                                <>
-                                    <Typography><span><b>PAN Number</b></span> - {fail.personalPanNumber ? fail.personalPanNumber : ""}</Typography>
-                                    <Typography sx={{mb:2}}><span><b>Process Failure</b></span> - {fail.processFailure ? fail[fail.processFailure] : ""}</Typography>
-                                </>
-                            ))}
-                            <Divider sx={{m:2}}></Divider>
-                            {validationFailures?.map((valid) => {
-                                let message = []
-                                valid?.details?.map((data) => (
-                                    message.push(data.message)
-                                ))
-                                return < Typography sx={{mb:2}}> <span><b>{valid._original.personalPanNumber}</b></span> : {message.join()} </Typography>
-                            })}
-                        </>
-
+                        <Typography><span><b>Total Records</b></span> - {uploadSummary.totalRecords ? uploadSummary.totalRecords : "0"}</Typography>
+                        <Typography><span><b>Validation Passed</b></span> - {uploadSummary.validationPassed ? uploadSummary.validationPassed : "0"}</Typography>
+                        <Typography><span><b>Success</b></span> - {uploadSummary.successfullyUploaded ? uploadSummary.successfullyUploaded : "0"}</Typography>
+                        <Typography><span><b>Exception</b></span> - {uploadSummary.failedToUpload ? uploadSummary.failedToUpload : "0"}</Typography>
+                        {uuId ? (<Typography><span><b>Click Here To Download</b></span> - <Button variant="text" onClick={handleDownloadSummary}>Summary Report</Button></Typography>) : ''}
+                        {uploadFailures?.length > 0 ? <Divider sx={{ m: 2 }}></Divider> : ""}
+                        {uploadFailures?.map((fail) => (
+                            <>
+                                <Typography><span><b>PAN Number</b></span> - {fail.personalPanNumber ? fail.personalPanNumber : ""}</Typography>
+                                <Typography sx={{ mb: 2 }}><span><b>Process Failure</b></span> - {fail.processFailure ? fail[fail.processFailure] : ""}</Typography>
+                            </>
+                        ))}
+                        {validationFailures?.length > 0 ? <Divider sx={{ m: 2 }}></Divider> : ""}
+                        {validationFailures?.map((valid) => {
+                            let message = [];
+                            valid?.details?.map((data) => (
+                                message.push(data.message)
+                            ))
+                            return (<>
+                                <Typography sx={{ mb: 2 }}><span><b>{valid._original.personalPanNumber ? valid._original.personalPanNumber : valid._original.partnerLoanId}</b></span> :- <span>{message.join()}</span></Typography>
+                            </>)
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

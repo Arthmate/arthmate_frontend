@@ -1,7 +1,8 @@
 
 export const environment = {
-    BaseUrl: 'http://k8s-default-devingre-6cc6540f26-504905718.ap-south-1.elb.amazonaws.com/lms-portal-service/',
-    BaseUrlToUpload : "http://13.233.251.173:2022/api/kuliza/v1/"
-    // BaseUrlToUpload : "http://3.111.115.55:2022/api/kuliza/v1/",
-// http://3.111.115.55:2022/  -  uat
-  };
+  // BaseUrl: 'http://k8s-default-devingre-6cc6540f26-504905718.ap-south-1.elb.amazonaws.com/lms-portal-service/', -QA
+  // BaseUrlToUpload: "http://13.233.251.173:2022/api/kuliza/v1/", //-QA
+
+  BaseUrl: 'https://uat-lms2.arthmate.com/lms-portal-service/', //-UAT
+  BaseUrlToUpload : "http://3.111.115.55:2022/api/kuliza/v1/", //-UAT
+};

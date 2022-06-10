@@ -12,7 +12,7 @@ import axios from 'axios';
 import { environment } from '../../baseUrl/Api';
 import Snackbar from '@mui/material/Snackbar';
 import { useParams } from 'react-router-dom';
-import {isString, includes} from 'lodash';
+import { isString, includes } from 'lodash';
 import { Link } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function CustomizedTables() {
+export default function Listing() {
     const params = useParams();
     const [listingData, setListingData] = useState('');
     const [state, setState] = useState({
@@ -43,7 +43,7 @@ export default function CustomizedTables() {
         open: false
     });
     const { vertical, horizontal, open, message } = state;
-    const {id} = params;
+    const { id } = params;
 
 
     const handleClick = (message) => {
@@ -76,13 +76,13 @@ export default function CustomizedTables() {
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableBody>
-                        { listingData && (
+                        {listingData && (
                             Object.keys(listingData).map((key, i) => (
                                 listingData[key] !== null ?
                                     (
                                         <TableRow key={i}>
                                             <TableCell sx={{ fontWeight: "bold" }} align="left">{key.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) { return str.toUpperCase(); })}</TableCell>
-                                            {isString(listingData[key]) && includes(listingData[key],'http') || includes(listingData[key],'file')? <TableCell align="left"><Link href={listingData[key]} underline="hover">{listingData[key]}</Link></TableCell> : <TableCell align="left">{listingData[key] }</TableCell>}
+                                            {isString(listingData[key]) && includes(listingData[key], 'http') || includes(listingData[key], 'file') ? <TableCell align="left"><Link href={listingData[key]} underline="hover">{listingData[key]}</Link></TableCell> : <TableCell align="left">{listingData[key]}</TableCell>}
                                         </TableRow>
                                     ) :
                                     ""

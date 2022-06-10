@@ -36,7 +36,6 @@ function Upload() {
 
 
     const getDetailPartner = async () => {
-        console.log(environment.BaseUrlToUpload+ `detailedPartners`,"url");
         await axios.get(environment.BaseUrlToUpload + `detailedPartners`)
             .then(response => {
                 const res = response.data.body;
@@ -118,6 +117,7 @@ function Upload() {
                                 setAlert(true);
                             } else {
                                 setUploadSummary(body);
+                                setUuId(uuid);
                                 setStatus(status);
                                 setSelectedFile('');
                                 setAlert(true);
